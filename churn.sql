@@ -162,7 +162,7 @@ WITH all_dates AS (
 , churn AS (
 
   SELECT *
-        , IF((cum_balance <= 0 AND lesson_flag != 0 AND IFNULL(days_to_next_payment,9) > 8), 1, 0)                                AS is_churn
+        , IF((cum_balance <= 0 AND lesson_flag != 0 AND IFNULL(days_to_next_payment,9) > 8), 1, 0)                                      AS is_churn
         , IF((cum_balance > 0 AND days_between_lessons > 30), 1, 0)	                                                              AS is_sleeping
   FROM days
 )
@@ -170,7 +170,7 @@ WITH all_dates AS (
 , rehab AS (
 
 SELECT *
-    , CASE WHEN paid_flag = 1 AND LAG(is_churn, 1) OVER(PARTITION BY student_id ORDER BY event_day ASC) = 1 THEN 1 ELSE 0 END         AS is_churn_rehab
+    , CASE WHEN paid_flag = 1 AND LAG(is_churn, 1) OVER(PARTITION BY student_id ORDER BY event_day ASC) = 1 THEN 1 ELSE 0 END           AS is_churn_rehab
     , CASE WHEN lesson_flag = 1 AND LAG(is_sleeping, 1) OVER(PARTITION BY student_id ORDER BY event_day ASC) = 1 THEN 1 ELSE 0 END      AS is_sleeping_rehab
 
 FROM churn
