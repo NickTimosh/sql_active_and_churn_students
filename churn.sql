@@ -123,9 +123,9 @@ WITH all_dates AS (
           , COALESCE(pd.nmb_lessons_paid,0)                                                                                                 AS lessons_paid
           , pd.lesson_paid_type                                                                                                             AS lesson_paid_type
           , SUM(COALESCE(pd.nmb_lessons_paid,0)  - COALESCE(ps.lesson_flag,0)) OVER (PARTITION BY ed.student_id ORDER by ed.event_day ASC)  AS cum_balance
-          , DATE_FORMAT(pd.next_payment_date, '%Y-%m-%d')	                                                                                  AS next_payment_date
+          , DATE_FORMAT(pd.next_payment_date, '%Y-%m-%d')	                                                                                AS next_payment_date
           , DATEDIFF(pd.next_payment_date, ed.event_day)                                                                                    AS days_between_payments
-          , DATE_FORMAT(ps.next_lesson_date, '%Y-%m-%d')	                                                                                  AS next_lesson_date
+          , DATE_FORMAT(ps.next_lesson_date, '%Y-%m-%d')	                                                                                AS next_lesson_date
           , DATEDIFF(ps.next_lesson_date, ed.event_day)                                                                                     AS days_between_lessons
     FROM event_day AS ed
       LEFT JOIN passed AS ps ON ed.event_day = ps.event_day_passed AND ed.student_id = ps.student_id
@@ -170,7 +170,7 @@ WITH all_dates AS (
 , rehab AS (
 
 SELECT *
-    , CASE WHEN paid_flag = 1 AND LAG(is_churn, 1) OVER(PARTITION BY student_id ORDER BY event_day ASC) = 1 THEN 1 ELSE 0 END           AS is_churn_rehab
+    , CASE WHEN paid_flag = 1 AND LAG(is_churn, 1) OVER(PARTITION BY student_id ORDER BY event_day ASC) = 1 THEN 1 ELSE 0 END         AS is_churn_rehab
     , CASE WHEN lesson_flag = 1 AND LAG(is_sleeping, 1) OVER(PARTITION BY student_id ORDER BY event_day ASC) = 1 THEN 1 ELSE 0 END      AS is_sleeping_rehab
 
 FROM churn
