@@ -1,4 +1,4 @@
-# 1. Scheduled students (regular and single lessons)
+# 1. All Scheduled students (regular and single lessons)
 
 WITH all_dates AS (
 
@@ -29,9 +29,6 @@ WITH all_dates AS (
               FROM calendar AS cl
                 LEFT JOIN classroom AS cs ON cl.classroom = cs.classroom_id
               WHERE cl.type IN ('single', 'trial')
-                -- the day of each month where scheduled students considered as active:
-                # AND created_at <= DATE_FORMAT(datetime, '%Y-%m-08')  
-                # AND (deleted_at IS NULL OR deleted_at > DATE_FORMAT(datetime, '%Y-%m-08'))
                 AND (deleted_at IS NULL OR deleted_at > DATE_FORMAT(datetime, '%Y-%m-01'))
             ) AS s
       WHERE 1=1
@@ -78,8 +75,8 @@ WITH all_dates AS (
           , 1                                     AS paid_flag
           , type                                  AS lesson_paid_type
           , number_of_lessons                     AS nmb_lessons_paid
-          , FIRST_VALUE(created_at) OVER(PARTITION BY student_id ORDER BY created_at ASC) AS first_payment_date
-          , LEAD(created_at, 1) OVER(PARTITION BY student_id ORDER BY created_at ASC) AS next_payment_date 
+          , FIRST_VALUE(created_at) OVER(PARTITION BY student_id ORDER BY created_at ASC)   AS first_payment_date
+          , LEAD(created_at, 1) OVER(PARTITION BY student_id ORDER BY created_at ASC)       AS next_payment_date 
     FROM lesson
     WHERE type != 'unpaid'
 )
@@ -88,13 +85,13 @@ WITH all_dates AS (
 
     SELECT DATE_FORMAT(ps.datetime, '%Y-%m-%d') 	  AS event_day_passed
           , ps.student		                          AS student_id
-          , ps.status                               AS lesson_status
+          , ps.status                                 AS lesson_status
           , LEAD(ps.datetime, 1) OVER(PARTITION BY ps.student ORDER BY ps.datetime ASC) AS next_lesson_date
           
           -- additional conditions:
  
           , CASE WHEN 
-                  -- missed lessons in given period are not considered due to the lockdown:
+                  -- missed lessons in given period are not considered due to the blackout:
                       (DATE_FORMAT(ps.datetime, '%Y-%m-%d') BETWEEN '2022-12-01' AND '2023-02-28'
                       AND ps.status IN (4))
                       OR
