@@ -22,7 +22,9 @@ The project implementation included the following main stages:
 
 * Next, I transferred my SQL code to Tableau and created a data model that established relationships with other relevant tables. This allowed me to filter data by specific products, lesson types, and other variables.
 
-* Finally, I used Tableau to develop a simple, yet effective, dashboard that displayed time-series visualizations of churn and sleeping students. To ensure that my data was up-to-date, I scheduled incremental data updates. By leveraging these techniques, I was able to gain valuable insights into the churn behavior of online school students.
+* I used Tableau to develop a simple, yet effective, dashboard that displayed time-series visualizations of churn and sleeping students. To ensure that my data was up-to-date, I scheduled incremental data updates. By leveraging these techniques, I was able to gain valuable insights into the churn behavior of online school students.
+
+* Finally, I wrote detailed documentation that allows to effectively interact and maintain the dashboard
 
 ## Next steps
 
