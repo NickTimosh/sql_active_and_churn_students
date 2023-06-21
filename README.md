@@ -1,4 +1,4 @@
-# Churn Analysis (online school)
+# 🎈 Churn Analysis (online school)
 Time-series analysis of Churn and Sleeping students, as well as Rehab Students out of all Active students for each particular month. 
 
 ## Project
