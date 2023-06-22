@@ -16,7 +16,7 @@ WITH all_dates AS (
       WHERE cl.type IN ('regular')
 )
 
-, schedule AS (   -- appending single and regular students
+, schedule AS (   -- appending single and regular students.
 
       # all distinct single_students for each month
 
