@@ -7,6 +7,8 @@ The primary goal of this project was to analyze students' payment histories and 
 
 ![Screenshot 2023-04-19 201024](https://user-images.githubusercontent.com/116592259/233165468-2fbac4bc-e8ed-46bb-8898-361bdff86ddf.png)
 
+The most challenging part of the project was to track and update the balance for each student whenever events such as lesson attendance, purchases and other activities occurred. I collected information on 50,000 active students and 2,000,000 related events to achieve the goal. Tha allowed me to calculate cumulative balances for each student and each event.
+
 ## Terms and Definitions
 
 * Active students - all students with scheduled lessons for the given month
