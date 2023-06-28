@@ -26,6 +26,12 @@ The project implementation included the following main stages:
 
 * Finally, I wrote detailed documentation that allows to effectively interact and maintain the dashboard
 
+## Functions and techniques
+
+The following list represents utilized fuctions and techniques within the project:
+
+* 
+
 ## Next steps
 
 While the analysis yielded insights into the dynamic of student churn, it did not reveal specific patterns or underlying reasons for churn. To gain a deeper understanding of Students Churn, further analysis needed to examine impact of factors such as course content, teacher effectiveness, student demographics and other. This more in-depth analysis will help to identify potential causes of student churn and suggest ways to reduce it in the future.
