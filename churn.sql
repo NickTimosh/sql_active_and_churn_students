@@ -85,7 +85,7 @@ WITH all_dates AS (
 
     SELECT DATE_FORMAT(ps.datetime, '%Y-%m-%d') 	  AS event_day_passed
           , ps.student		                          AS student_id
-          , ps.status                                 AS lesson_status
+          , ps.status                                     AS lesson_status
           , LEAD(ps.datetime, 1) OVER(PARTITION BY ps.student ORDER BY ps.datetime ASC) AS next_lesson_date
           
           -- additional conditions:
