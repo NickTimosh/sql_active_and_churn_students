@@ -162,7 +162,7 @@ WITH all_dates AS (
 , churn AS (
 
   SELECT *
-        , IF((cum_balance <= 0 AND lesson_flag != 0 AND IFNULL(days_to_next_payment,9) > 8), 1, 0)                                AS is_churn
+        , IF((cum_balance <= 0 AND lesson_flag != 0 AND IFNULL(days_to_next_payment,9) > 8), 1, 0)                                    AS is_churn
         , IF((cum_balance > 0 AND days_between_lessons > 30), 1, 0)	                                                              AS is_sleeping
   FROM days
 )
