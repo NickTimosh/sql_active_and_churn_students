@@ -16,7 +16,7 @@ The most challenging part of the project was to track and update the balance for
 * Sleeping  students - students with positive balance and paused visiting (considered as sleeping students if it's more than 30 days before next lesson)
 * Rehab students - students switched back from churn status (Churn Rehab) or sleeping status (Sleeping Rehab)
 
-## Main stages 
+## Main stages:
 
 The project implementation included the following main stages:
 
