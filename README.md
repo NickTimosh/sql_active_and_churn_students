@@ -28,7 +28,7 @@ The project implementation included the following main stages:
 
 * Finally, I wrote detailed documentation that allows to effectively interact and maintain the dashboard
 
-## Functions and techniques
+## Functions and techniques:
 
 The following list represents some of fuctions and techniques utilized within the project:
 
