@@ -9,14 +9,14 @@ The primary goal of this project was to analyze students' payment histories and 
 
 The most challenging part of the project was to track and update the balance for each student whenever events such as lesson attendance, purchases and other activities occurred. I collected information on 50,000 active students and 2,000,000 related events to achieve the goal. Tha allowed me to calculate cumulative balances for each student and each event.
 
-## Terms and Definitions:
+## Terms and Definitions
 
 * Active students - all students with scheduled lessons for the given month
 * Churn students - students with no lessons on the balance (considered as churn students if it's more than 8 days before next payment)
 * Sleeping  students - students with positive balance and paused visiting (considered as sleeping students if it's more than 30 days before next lesson)
 * Rehab students - students switched back from churn status (Churn Rehab) or sleeping status (Sleeping Rehab)
 
-## Main stages:
+## Main stages
 
 The project implementation included the following main stages:
 
@@ -28,7 +28,7 @@ The project implementation included the following main stages:
 
 * Finally, I wrote detailed documentation that allows to effectively interact and maintain the dashboard
 
-## Functions and techniques:
+## Functions and techniques
 
 The following list represents some of fuctions and techniques utilized within the project:
 
