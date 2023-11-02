@@ -1,7 +1,7 @@
 # 🎈 Churn Analysis (online school)
 Time-series analysis of Churn and Sleeping students, as well as Resurrected Students out of all Active students for each particular month. 
 
-## Project
+## Project:
 
 The primary goal of this project was to analyze students' payment histories and lesson visitation patterns over time, enabling me to assess the number of active students, churn rates, and sleeping rates. The analysis provide the foundation for further understanding the reasons why students are leaving the school, with the aim of reducing the rate of student churn.
 
