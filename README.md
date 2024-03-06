@@ -29,7 +29,7 @@ The project implementation included the following main stages:
 
 * I used Tableau to develop a simple, yet effective, dashboard that displayed time-series visualizations of churn and sleeping students. To ensure that my data was up-to-date, I scheduled incremental data updates. By leveraging these techniques, I was able to gain valuable insights into the churn behavior of online school students.
 
-* Finally, I wrote detailed documentation that allows to effectively interact and maintain the dashboard
+* Finally, I wrote detailed documentation that allows to effectively interact and maintain the dashboard.
 
 ## Functions and techniques
 
