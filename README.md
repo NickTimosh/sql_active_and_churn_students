@@ -3,7 +3,7 @@ Time-series analysis of Churn and Sleeping students, as well as Resurrected Stud
 
 ## Project 
 
-The primary goal of this project was to analyze students' payment histories and lesson visitation patterns over time, enabling me to assess the number of active students, churn rates, and sleeping rates. 
+The primary goal of this project was to analyze students payment histories and lesson visitation patterns over time, enabling me to assess the number of active students, churn rates, and sleeping rates. 
 The analysis provide the foundation for further understanding the reasons why students are leaving the school, with the aim of reducing the rate of student churn.
 
 ![Screenshot 2023-04-19 201024](https://user-images.githubusercontent.com/116592259/233165468-2fbac4bc-e8ed-46bb-8898-361bdff86ddf.png)
