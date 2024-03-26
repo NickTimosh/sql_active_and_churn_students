@@ -14,10 +14,10 @@ That allowed me to calculate cumulative balances for each student and each event
 
 ## Terms and Definitions
 
-* Active students - all students with scheduled lessons for the given month
-* Churn students - students with no lessons on the balance (considered as churn students if it's more than 8 days before next payment)
-* Sleeping  students - students with positive balance and paused visiting (considered as sleeping students if it's more than 30 days before next lesson)
-* Rehab students - students switched back from churn status (Churn Rehab) or sleeping status (Sleeping Rehab)
+* Active students - all students with scheduled lessons for the given month;
+* Churn students - students with no lessons on the balance (considered as churn students if it's more than 8 days before next payment);
+* Sleeping  students - students with positive balance and paused visiting (considered as sleeping students if it's more than 30 days before next lesson);
+* Rehab students - students switched back from churn status (Churn Rehab) or sleeping status (Sleeping Rehab).
 
 ## Main stages
 
