@@ -36,11 +36,11 @@ The project implementation included the following main stages:
 The following list represents some of fuctions and techniques utilized within the project:
 
 * Calendar - to obtain results from different tables (lessons visited, lessons purchased, lesson statuses) the calendar table has been created as a separate CTE;
-* Nested queries in FROM clause
-* Left Join, Full Join, Self Join
-* FIRST_VALUE(created_at) OVER(PARTITION BY student_id ORDER BY created_at ASC)   AS first_payment_date
-* LEAD(created_at, 1) OVER(PARTITION BY student_id ORDER BY created_at ASC)       AS next_payment_date
-* SUM(COALESCE(pd.nmb_lessons_paid,0)  - COALESCE(ps.lesson_flag,0)) OVER (PARTITION BY ed.student_id ORDER by ed.event_day ASC)  AS cum_balance
+* Nested queries in FROM clause;
+* Left Join, Full Join, Self Join;
+* FIRST_VALUE(created_at) OVER(PARTITION BY student_id ORDER BY created_at ASC)   AS first_payment_date;
+* LEAD(created_at, 1) OVER(PARTITION BY student_id ORDER BY created_at ASC)       AS next_payment_date;
+* SUM(COALESCE(pd.nmb_lessons_paid,0)  - COALESCE(ps.lesson_flag,0)) OVER (PARTITION BY ed.student_id ORDER by ed.event_day ASC)  AS cum_balance;
 
 ## Next steps
 
