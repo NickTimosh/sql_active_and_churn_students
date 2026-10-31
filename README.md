@@ -1,49 +1,112 @@
-# 🎈 Churn Analysis (online school)
-Time-series analysis of Churn and Sleeping students, as well as Resurrected Students out of all Active students for each particular month.
+# Mini-course: From Clever SQL to Maintainable Data Models
 
-## Project 
+## Overview
+Business problem: Identify students who churn, become inactive, and eventually return to an online learning platform. 
+Idea: We'll solve the same problem using three increasingly maintainable approaches.
 
-The primary goal of this project was to analyze students payment histories and lesson visitation patterns over time, enabling me to assess the number of active students, churn rates, and sleeping rates. 
-The analysis provide the foundation for further understanding the reasons why students are leaving the school, with the aim of reducing the rate of student churn.
+- Case 1 — Clever but Messy SQL
+Nested subqueries, repeated calculations, tightly coupled business logic.
 
-![Screenshot 2023-04-19 201024](https://user-images.githubusercontent.com/116592259/233165468-2fbac4bc-e8ed-46bb-8898-361bdff86ddf.png)
+- Case 2 — Structured SQL with CTEs
+Clear transformation steps, descriptive names, easier debugging.
 
-The most challenging part of the project was to track and update the balance for each student whenever events such as lesson attendance, purchases and other activities occurred. 
-I collected information on 50,000 active students and 2,000,000 related events to achieve the goal. 
-That allowed me to calculate cumulative balances for each student and each event.
+- Case 3 — Data Modeling and Medallion Architecture
+Reusable facts and dimensions, Bronze → Silver → Gold, modular dbt models.
 
-## Terms and Definitions
+## Common business rules
 
-* Active students - all students with scheduled lessons for the given month.
-* Churn students - students with no lessons on the balance (considered as churn students if it's more than 8 days before next payment).
-* Sleeping  students - students with positive balance and paused visiting (considered as sleeping students if it's more than 30 days before next lesson).
-* Rehab students - students switched back from churn status (Churn Rehab) or sleeping status (Sleeping Rehab).
+For this teaching example, we'll use simplified versions of your original definitions.
 
-## Main stages
+| Metric            | Definition                                                                 |
+| ----------------- | -------------------------------------------------------------------------- |
+| Churn             | Student runs out of lesson credits and makes no new purchase within 8 days |
+| Sleeping          | Student has remaining credits but hasn't attended a lesson for 30 days     |
+| Churn recovery    | Churned student purchases new lessons                                      |
+| Sleeping recovery | Inactive student resumes lessons                                           |
+| In schedule       | Student has an active regular schedule or a scheduled single/trial lesson  |
 
-The project implementation included the following main stages:
+Examples below use Snowflake-style SQL, with `:as_of_date` representing the analysis date. Assume test accounts and invalid lesson events are already filtered. Recovery is evaluated against the student's preceding state.
 
-* In this project, I utilized MySQL to query data and obtain information on all student transactions and lesson visits, allowing me to determine the balance of each student. Using this data, I identified students who were either churning, sleeping, or in a state of rehabilitation based on specific conditions. To aid in my analysis, I used Google Colab to write queries and create simple visualizations.
+## Case 1 — The clever SQL query
 
-* Next, I transferred my SQL code to Tableau and created a data model that established relationships with other relevant tables. This allowed me to filter data by specific products, lesson types, and other variables.
+Hard to maintain.
+The developer tries to solve everything in one query using nested subqueries, window functions, correlated conditions, and calculations inside calculations.
 
-* I used Tableau to develop a simple, yet effective, dashboard that displayed time-series visualizations of churn and sleeping students. To ensure that my data was up-to-date, I scheduled incremental data updates. By leveraging these techniques, I was able to gain valuable insights into the churn behavior of online school students.
+What's wrong?
 
-* Finally, I wrote detailed documentation that allows to effectively interact and maintain the dashboard.
+- The balance calculation is buried several levels deep.
+- Business rules are mixed with event preparation and aggregation.
+- Reusing the balance calculation requires copying SQL.
+- Adding scheduling or recovery logic makes the query substantially harder to reason about.
+- Testing individual transformations is difficult.
 
-## Functions and techniques
+Teaching point: A query can be technically sophisticated and still be poorly engineered.
 
-The following list represents some of fuctions and techniques utilized within the project
+## Case 2 — Clean SQL with CTEs
 
-* Calendar - to obtain results from different tables (lessons visited, lessons purchased, lesson statuses) the calendar table has been created as a separate CTE;
-* Nested queries in FROM clause;
-* Left Join, Full Join, Self Join;
-* FIRST_VALUE(created_at) OVER(PARTITION BY student_id ORDER BY created_at ASC)   AS first_payment_date;
-* LEAD(created_at, 1) OVER(PARTITION BY student_id ORDER BY created_at ASC)       AS next_payment_date;
-* SUM(COALESCE(pd.nmb_lessons_paid,0)  - COALESCE(ps.lesson_flag,0)) OVER (PARTITION BY ed.student_id ORDER by ed.event_day ASC)  AS cum_balance;
+More maintainable
+Now we separate each transformation into a clearly named step. This is inspired by your original implementation, with a few simplifications.
 
-## Next steps
+What's improved?
 
-While the analysis yielded insights into the dynamic of student churn, it did not reveal specific patterns or underlying reasons for churn. 
+- Each CTE describes one transformation.
+- We can debug purchases, lesson consumption, balances, and churn separately.
+- The SQL follows the business process from events to metrics.
+- New business rules can be introduced without restructuring the entire query.
 
-To gain a deeper understanding of Students Churn, further analysis needed to examine impact of factors such as course content, teacher effectiveness, student demographics and other. This more in-depth analysis will help to identify potential causes of student churn and suggest ways to reduce it in the future.
+What's still missing?
+
+The query remains monolithic. If the Finance team needs lesson balances, or the Product team needs student activity history, they must reproduce part of this logic.
+
+Your original implementation already has much of this structure, making it a great intermediate example.
+
+## Case 3 — Data modeling: Bronze → Silver → Gold
+
+Scalable architecture
+Instead of writing one large query, we build a data platform in which each transformation has a specific responsibility.
+
+<img width="788" height="454" alt="Screenshot 2026-10-31 at 12 52 09 PM" src="https://github.com/user-attachments/assets/30bb9a0b-f27a-449e-9368-8ba18a3985c8" />
+
+- Bronze — Raw data:
+
+raw_lesson
+raw_passed
+raw_calendar
+
+- Silver — Cleaned and standardized
+
+stg_payments
+stg_lesson_visits
+stg_schedules
+dim_students
+
+Gold — Facts, dimensions and marts
+
+fct_lesson_transactions
+fct_student_activity
+fct_student_daily_balance
+mart_student_churn
+
+For a production implementation, we'd build daily student-state snapshots, handle the monthly schedule and recovery flags, and keep all historical calculations point-in-time correct.
+
+The key difference is that the churn model no longer needs to understand how raw lesson events are cleaned or how balances are calculated. Those responsibilities belong to upstream models.
+
+## Comparison for your final slide
+
+| Dimension               | Messy SQL         | CTEs                | Data models             |
+| ----------------------- | ----------------- | ------------------- | ----------------------- |
+| Readability             | Low               | High                | High                    |
+| Reusability             | Low               | Limited             | High                    |
+| Testing                 | Difficult         | Moderate            | Model-level             |
+| Debugging               | Difficult         | Easier              | Isolated                |
+| Changing business rules | Risky             | Manageable          | More controlled         |
+| Engineering overhead    | Low initially     | Low                 | Higher initially        |
+| Best for                | Quick exploration | Standalone analyses | Shared production logic |
+
+## Suggested closing message for the course
+
+> The evolution of a data engineer isn't about writing more complex SQL. It's about reducing the complexity required to understand, reuse, test, and change the logic.
+
+One particularly interesting detail in your historical query is that some CTEs are referenced under different names (`paid` versus `paid_lesson`, `passed` versus `passed_lesson`). There's also a risk of multiplying records when joining multiple payments or lessons on the same day. You could use these as a practical demonstration of how even structured CTE-based SQL can remain fragile without explicit grain definitions and data quality tests.
+
+The strongest teaching example would show how the same student balance can power churn analysis, revenue analytics, student segmentation, and customer support once it's modeled as a reusable data asset.
