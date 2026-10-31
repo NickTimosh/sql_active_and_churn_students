@@ -1,19 +1,16 @@
 # Mini-course: From Clever SQL to Maintainable Data Models
 
-Business problem: Identify students who churn, become inactive, and eventually return to an online learning platform.
+## Overview
+Business problem: Identify students who churn, become inactive, and eventually return to an online learning platform. 
+Idea: We'll solve the same problem using three increasingly maintainable approaches.
 
-We'll solve the same problem using three increasingly maintainable approaches.
-
-Case 1 — Clever but Messy SQL
-
+- Case 1 — Clever but Messy SQL
 Nested subqueries, repeated calculations, tightly coupled business logic.
 
-Case 2 — Structured SQL with CTEs
-
+- Case 2 — Structured SQL with CTEs
 Clear transformation steps, descriptive names, easier debugging.
 
-Case 3 — Data Modeling and Medallion Architecture
-
+- Case 3 — Data Modeling and Medallion Architecture
 Reusable facts and dimensions, Bronze → Silver → Gold, modular dbt models.
 
 ## Common business rules
@@ -32,8 +29,7 @@ Examples below use Snowflake-style SQL, with `:as_of_date` representing the anal
 
 ## Case 1 — The clever SQL query
 
-Hard to maintain
-
+Hard to maintain.
 The developer tries to solve everything in one query using nested subqueries, window functions, correlated conditions, and calculations inside calculations.
 
 What's wrong?
@@ -49,7 +45,6 @@ Teaching point: A query can be technically sophisticated and still be poorly eng
 ## Case 2 — Clean SQL with CTEs
 
 More maintainable
-
 Now we separate each transformation into a clearly named step. This is inspired by your original implementation, with a few simplifications.
 
 What's improved?
@@ -68,35 +63,28 @@ Your original implementation already has much of this structure, making it a gre
 ## Case 3 — Data modeling: Bronze → Silver → Gold
 
 Scalable architecture
-
 Instead of writing one large query, we build a data platform in which each transformation has a specific responsibility.
 
-Bronze — Raw data
+<img width="788" height="454" alt="Screenshot 2026-10-31 at 12 52 09 PM" src="https://github.com/user-attachments/assets/30bb9a0b-f27a-449e-9368-8ba18a3985c8" />
+
+- Bronze — Raw data:
 
 raw_lesson
-
 raw_passed
-
 raw_calendar
 
-Silver — Cleaned and standardized
+- Silver — Cleaned and standardized
 
 stg_payments
-
 stg_lesson_visits
-
 stg_schedules
-
 dim_students
 
 Gold — Facts, dimensions and marts
 
 fct_lesson_transactions
-
 fct_student_activity
-
 fct_student_daily_balance
-
 mart_student_churn
 
 For a production implementation, we'd build daily student-state snapshots, handle the monthly schedule and recovery flags, and keep all historical calculations point-in-time correct.
